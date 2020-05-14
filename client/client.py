@@ -9,7 +9,8 @@ Black-box channel simulator. (client)
 
 Instructions
 ------------
-python3 client.py --input_file=[FILENAME] --output_file=[FILENAME] --srv_hostname=[HOSTNAME] --srv_port=[PORT]
+python3 client/client.py --input_file=res/input.txt --output_file=res/output.txt --srv_hostname=iscsrv72.epfl.ch --srv_port=80
+
 """
 
 import argparse
