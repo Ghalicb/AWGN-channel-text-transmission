@@ -1,24 +1,45 @@
 import numpy as np
 import symbol_codeword_translation as sct
+import create_hadamard_matrix as chm
 
-
-def decode():
+def write_guess(list_symbols, guess_file):
     """
+    Parameters
+
+    ----------
+    Returns
+   
+    -------
 
     """
-    # Read the output
+    x = ' '
+    string = x.join(list_symbols)
+    file = open(guess_file,"w") 
+    file.writelines(string) 
+    file.close() 
 
-    # Mean of each repeated element in the output to get Y
+def decode(output_file, size_codewords, repetition):
+    """
+    Parameters
 
-    # Project the output
-    # U = project_output(...)
+    ----------
+    Returns
+   
+    -------
 
-    # Find the argmax of U
-    # i = np.argmax(np.abs(U))
-    # sign ----> to take into account when translating codeword
+    """
+    list_vectors_rep = read_output(output_file, size_codewords)
 
-    # Return the symbol corresponding
-    # return codeword_to_symbol(U[i], i)
+    list_vectors = [retrieve_output_vector(v, repetition) for v in list_vectors_rep]
+
+    hadamard_matrix = chm.create_hadamard_matrix(len(list_vectors[0]))
+    
+    list_U = [ hadamard_multiplication(hadamard_matrix, y) for y in list_vectors]
+
+    list_symbols = [retrieve_symbol(u)for u in list_U]
+
+    return list_symbols
+
 
 def retrieve_output_vector(vect, N):
     """
@@ -38,7 +59,7 @@ def retrieve_output_vector(vect, N):
     return np.mean(vector_array, axis = 1)
 
 
-def project_output(M, Y):
+def hadamard_multiplication(M, Y):
     """
     Use the property of the Hadamard matrix to efficiently compute M @ Y.
 
@@ -86,7 +107,7 @@ def retrieve_symbol(U):
     """
 
     axis = np.argmax( np.absolute(U))
-    symbol = sct.codeword_to_symbol(U.shape[0], np.sign(U[axis]), axis)
+    symbol = sct.col_to_symbol(U.shape[0], np.sign(U[axis]), axis)
 
     return symbol
 
