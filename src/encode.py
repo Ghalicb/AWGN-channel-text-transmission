@@ -6,7 +6,7 @@ SIZE_H = 128
 REPETITIONS = 1
 
 
-def read_text(input_file):
+def read_text(given_text):
     """
     Parameters
     ----------
@@ -14,7 +14,7 @@ def read_text(input_file):
 
     -------
     """
-    return list(open(input_file, "r"))
+    return list(open(given_text, "r"))
 
 
 def encode(list_symbols, intput_file):
