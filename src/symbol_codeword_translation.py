@@ -3,7 +3,7 @@
 # ord('a') -> 97  (le numéro ascii de 'a')
 # chr(97)  -> 'a' (le charactère associé au 98ème élément de la table ascii)
 
-def symbol_to_codeword(symbol, size_H):
+def symbol_to_col(symbol, size_H):
     """
 
     Function that receive a symbol and the number of row sin the Hadamard matrix and find the corresponding columns with his ascii. 
@@ -43,7 +43,7 @@ def symbol_to_codeword(symbol, size_H):
 
 
 
-def codeword_to_symbol(size_H, sign, index):
+def col_to_symbol(size_H, sign, index):
     """
 
     Function that receive a sign and an index in the Hadamard matrix and return the corresponding symbol
