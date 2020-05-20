@@ -19,6 +19,7 @@ def symbol_to_codeword(symbol, size_H):
 
 
     Returns
+    
     sign :      int 
                 The sign that wiil be multipled with the selected column of the Hamard matrix (-1,1)
     

@@ -1,4 +1,5 @@
 import numpy as np
+import symbol_codeword_translation as sct
 
 
 def decode():
@@ -18,6 +19,23 @@ def decode():
 
     # Return the symbol corresponding
     # return codeword_to_symbol(U[i], i)
+
+def retrieve_output_vector(vect, N):
+    """
+    Parameters
+
+    ----------
+    Returns
+   
+    -------
+
+    """
+    len_chunks = len(vect)/N
+    if(type(len_chunks)== float):
+        print('Error in retrieve_input_vector : N is not a multiple of the length of the vector.')
+    vector_array = np.array([vect[i:i + len_chunks] for i in range(0, len(vect),len_chunks)])
+
+    return np.mean(vector_array, axis = 1)
 
 
 def project_output(M, Y):
@@ -54,3 +72,22 @@ def project_output(M, Y):
     U = np.concatenate((A+B, A-B))
 
     return U
+
+def retrieve_symbol(U):
+    
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    axis = np.argmax( np.absolute(U))
+    symbol = sct.codeword_to_symbol(U.shape[0], np.sign(U[axis]), axis)
+
+    return symbol
+
+
