@@ -52,9 +52,9 @@ def codeword_to_symbol(size_H, sign, index):
     size_H :    int 
                 The size N of the Hadamard matrix (number of rows or number of columns since sysmmetric)
     sign :      int {-1,1}
-                The sign that wiil be multipled with the selected column of the Hamard matrix 
+                The sign that will be multipled with the selected column of the Hamard matrix
     index :     int [0, N-1]
-                Return the index of the column that we have sleected
+                Return the index of the column that we have selected
     ----------
 
     Returns
