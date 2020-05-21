@@ -7,13 +7,13 @@ def create_hadamard_matrix(N):
 
     Parameters
     ----------
-    N : int
-        Size of the Hadamard matrix. (A power of 2)
+    N :     int
+            Size of the Hadamard matrix (A power of 2)
 
     Returns
     -------
-    H_i : :py:class:`~numpy.ndarray`
-        A NxN Hadamard matrix.
+    H_i :   :py:class:`~numpy.ndarray`
+            A NxN Hadamard matrix
     """
 
     if not math.log2(N).is_integer():
@@ -47,16 +47,16 @@ def hadamard_multiplication(M, Y):
 
     Parameters
     ----------
-    M : :py:class:`~numpy.ndarray`
-        A Hadamard matrix (of size NxN).
+    M :     :py:class:`~numpy.ndarray`
+            A Hadamard matrix (of size NxN)
 
-    Y : :py:class:`~numpy.ndarry`
-        A vector corresponding to the channel output (of size Nx1).
+    Y :     :py:class:`~numpy.ndarry`
+            A vector corresponding to the channel output (of size Nx1)
 
     Returns
     -------
-    U : :py:class:`~numpy.ndarray`
-        A vector corresponding to Y written in the basis formed by M (of size Nx1).
+    U :     :py:class:`~numpy.ndarray`
+            A vector corresponding to Y written in the basis formed by M (of size Nx1)
     """
     middle_index = int(M.shape[0] / 2)
     M_quarter = M[:middle_index, :middle_index]

@@ -47,6 +47,8 @@ def read_output(output_file, codeword_size):
     """
     Read the output and store it as a list of codeword.
 
+    It raises an error if the length of the content of output_file is not a multiple of codeword_size.
+
     Parameters
     ----------
     output_file :   string
@@ -74,7 +76,7 @@ def write_guess(list_symbols, guess_file):
 
     Parameters
     ----------
-    list_symbols :  ???
+    list_symbols :  list
                     A list of recovered symbols
 
     guess_file:     string
