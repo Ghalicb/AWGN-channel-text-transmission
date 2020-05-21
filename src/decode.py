@@ -1,8 +1,8 @@
 import numpy as np
 
-import src.utility as utl
-import src.parsing as prs
-from src.constant import SIZE_H, REPETITIONS, OUTPUT_FILE
+import utility as utl
+import parsing as prs
+from constant import SIZE_H, REPETITIONS, OUTPUT_FILE
 
 
 def decode():

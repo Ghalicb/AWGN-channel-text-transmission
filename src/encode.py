@@ -1,8 +1,8 @@
 import numpy as np
 
-import src.utility as utl
-import src.parsing as prs
-from src.constant import SIZE_H, REPETITIONS, INPUT_FILE
+import utility as utl
+import parsing as prs
+from constant import SIZE_H, REPETITIONS, INPUT_FILE
 
 
 def encode(list_symbols):
@@ -18,7 +18,11 @@ def encode(list_symbols):
     list_col = [utl.symbol_to_col(s, SIZE_H) for s in list_symbols]
     hadamard_matrix = utl.create_hadamard_matrix(SIZE_H)
 
-    list_codewords = [create_codeword(t[1], t[0], hadamard_matrix, REPETITIONS) for t in list_col]
+    list_codewords = []
+    for t in list_col:
+        codeword_rep = create_codeword(t[1], t[0], hadamard_matrix, REPETITIONS)
+        for c in codeword_rep:
+            list_codewords.append(c)
 
     prs.write_input(list_codewords, INPUT_FILE)
 
@@ -44,8 +48,10 @@ def create_codeword(index, sign, H_matrix, rep=1):
 
     Returns
     -------
-    :py:class:`~numpy.ndarray`
+    rep_col_H : list
+                A list containing repeated copy of a codeword
 
     """
     col_H = sign * H_matrix[:, index]
-    return np.repeat(col_H, rep)
+    rep_col_H = [list(col_H) for _ in range(rep)]
+    return rep_col_H

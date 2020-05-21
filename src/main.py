@@ -1,9 +1,9 @@
 import os
 
-from src.encode import encode
-from src.decode import decode
-from src.parsing import read_message, write_guess
-from src.constant import MESSAGE_FILE, INPUT_FILE, OUTPUT_FILE, GUESS_FILE
+from encode import encode
+from decode import decode
+from parsing import read_message, write_guess
+from constant import MESSAGE_FILE, INPUT_FILE, OUTPUT_FILE, GUESS_FILE
 
 
 def main():

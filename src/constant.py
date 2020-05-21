@@ -6,7 +6,7 @@ File containing all the necessary constant for this project
 SIZE_H = 128
 
 "Number of time we repeat a codeword to improve the chance of recovering it perfectly"
-REPETITIONS = 1
+REPETITIONS = 4
 
 "File path for the original message"
 MESSAGE_FILE = '../res/message.txt'
