@@ -53,6 +53,7 @@ def read_output(output_file, codeword_size):
     ----------
     output_file :   string
                     File path containing the output of the receiver
+
     codeword_size : int
                     The size of the codeword that were used to encode the original symbols
 
@@ -65,7 +66,8 @@ def read_output(output_file, codeword_size):
     with open(output_file) as f:
         xs = ' '.join(str(elem) for elem in list(f))
 
-    codewords = np.array(xs.split()).reshape((-1, codeword_size))
+    codewords_str = np.array(xs.split()).reshape((-1, codeword_size))
+    codewords = [[float(c) for c in codeword] for codeword in codewords_str]
 
     return codewords
 
