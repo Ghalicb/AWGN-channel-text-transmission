@@ -10,3 +10,6 @@ REPETITIONS = 1
 
 "File path for the transmitter input"
 INPUT_FILE = '../res/input.txt'
+
+"File path for the receiver output"
+OUTPUT_FILE = '../res/output.txt'

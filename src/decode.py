@@ -1,114 +1,76 @@
 import numpy as np
-import symbol_codeword_translation as sct
-import create_hadamard_matrix as chm
 
-def write_guess(list_symbols, guess_file):
+import src.utility as utl
+import src.parsing as prs
+from src.constant import SIZE_H, REPETITIONS, OUTPUT_FILE
+
+
+def decode():
     """
-    Parameters
+    Read the receiver output and decode its content to recover the list of symbols sent by the transmitter.
 
-    ----------
     Returns
-   
     -------
+    list_symbols :  list
+                    The recovered symbols sent by the transmitter
 
     """
-    x = ' '
-    string = x.join(list_symbols)
-    file = open(guess_file,"w") 
-    file.writelines(string) 
-    file.close() 
-
-def decode(output_file, size_codewords, repetition):
-    """
-    Parameters
-
-    ----------
-    Returns
-   
-    -------
-
-    """
-    list_vectors_rep = read_output(output_file, size_codewords)
-
-    list_vectors = [retrieve_output_vector(v, repetition) for v in list_vectors_rep]
-
-    hadamard_matrix = chm.create_hadamard_matrix(len(list_vectors[0]))
+    codewords_rep = prs.read_output(OUTPUT_FILE, SIZE_H)
+    codewords = average_codewords(codewords_rep, REPETITIONS)
+    hadamard_matrix = utl.create_hadamard_matrix(SIZE_H)
     
-    list_U = [ hadamard_multiplication(hadamard_matrix, y) for y in list_vectors]
+    list_U = [utl.hadamard_multiplication(hadamard_matrix, y) for y in codewords]
 
-    list_symbols = [retrieve_symbol(u)for u in list_U]
+    list_symbols = [recover_symbol(u)for u in list_U]
 
     return list_symbols
 
 
-def retrieve_output_vector(vect, N):
+def average_codewords(codewords_rep, rep):
     """
-    Parameters
-
-    ----------
-    Returns
-   
-    -------
-
-    """
-    len_chunks = len(vect)/N
-    if(type(len_chunks)== float):
-        print('Error in retrieve_input_vector : N is not a multiple of the length of the vector.')
-    vector_array = np.array([vect[i:i + len_chunks] for i in range(0, len(vect),len_chunks)])
-
-    return np.mean(vector_array, axis = 1)
-
-
-def hadamard_multiplication(M, Y):
-    """
-    Use the property of the Hadamard matrix to efficiently compute M @ Y.
-
-    This operation can be seen as a projection of Y into the basis formed
-    by the columns/rows of M (as Hadamard matrices are symmetric).
-
-    As Hadamard matrices have orthogonal columns, the resulting vector U
-    gives information on which column of M is closest to Y.
+    Perform an average between each repeated codeword in order to reduce the impact of the white gaussian noise.
 
     Parameters
     ----------
-    M : :py:class:`~numpy.ndarray`
-        A Hadamard matrix (of size NxN).
+    codewords_rep : list
+                    A list of codeword repeated a certain number of time
 
-    Y : :py:class:`~numpy.ndarry`
-        A vector corresponding to the channel output (of size Nx1).
+    rep :           int
+                    Number of time each codeword is repeated
 
     Returns
     -------
-    U : :py:class:`~numpy.ndarray`
-        A vector corresponding to Y written in the basis formed by M (of size Nx1).
+    codewords :     list
+                    A list of averaged codewords
+
     """
-    middle_index = int(M.shape[0] / 2)
-    M_quarter = M[:middle_index, :middle_index]
-    Y_top = Y[:middle_index]
-    Y_bot = Y[middle_index:]
+    codewords = []
 
-    A = M_quarter @ Y_top
-    B = M_quarter @ Y_bot
+    for i in range(0, len(codewords_rep), rep):
+        codeword = np.mean(codewords_rep[i:i+rep], axis=0)
+        codewords.append(codeword)
 
-    U = np.concatenate((A+B, A-B))
+    return codewords
 
-    return U
 
-def retrieve_symbol(U):
-    
+def recover_symbol(U):
     """
+    Recover a symbol based on the projection of the associated noisy codeword in the Hadamard matrix.
+
+    The elements of this projection indicate which column of the Hadamard matrix is the closest from the noisy codeword
+    (high value for an element indicates high chance for the associated column of being the correct codeword).
 
     Parameters
     ----------
+    U :         :py:class:`~numpy.ndarray`
+                The projection of the noisy codeword
 
     Returns
     -------
-
+    symbol :    char
+                The guessed symbol
     """
-
-    axis = np.argmax( np.absolute(U))
-    symbol = sct.col_to_symbol(U.shape[0], np.sign(U[axis]), axis)
+    col = np.argmax(np.absolute(U))
+    symbol = utl.col_to_symbol(col, np.sign(U[col]), U.shape[0])
 
     return symbol
-
-
